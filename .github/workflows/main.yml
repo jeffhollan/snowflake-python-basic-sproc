@@ -37,12 +37,12 @@ jobs:
 
       - name: Create or update storedproc
         run: |
-          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -w SRI -d JEFFHOLLAN_DEMO -s PUBLIC -q 'CREATE OR REPLACE PROCEDURE PYPROC_${{ github.ref_name }}(from_table STRING, to_table STRING, count INT) \
-                                        RETURNS STRING \
-                                        LANGUAGE PYTHON \
-                                        RUNTIME_VERSION = '\''3.8'\'' \
-                                        PACKAGES = ('\''snowflake-snowpark-python'\'') \
-                                        IMPORTS = ('\''@~/${{ github.ref_name }}/python.py'\'') \
+          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -w SRI -d JEFFHOLLAN_DEMO -s PUBLIC -q 'CREATE OR REPLACE PROCEDURE PYPROC_${{ github.ref_name }}(from_table STRING, to_table STRING, count INT)
+                                        RETURNS STRING
+                                        LANGUAGE PYTHON
+                                        RUNTIME_VERSION = '\''3.8'\''
+                                        PACKAGES = ('\''snowflake-snowpark-python'\'')
+                                        IMPORTS = ('\''@~/${{ github.ref_name }}/python.py'\'')
                                         HANDLER = '\''python.run'\'';' -o friendly=false
         env:
           SNOWSQL_PWD: ${{ secrets.SNOWFLAKE_PASSWORD }}
