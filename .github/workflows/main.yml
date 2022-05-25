@@ -44,3 +44,5 @@ jobs:
                                         PACKAGES = ('\''snowflake-snowpark-python'\'') \
                                         IMPORTS = ('\''@~/${{ github.ref_name }}/python.py'\'') \
                                         HANDLER = '\''python.run'\'';' -o friendly=false
+        env:
+          SNOWSQL_PWD: ${{ secrets.SNOWFLAKE_PASSWORD }}
