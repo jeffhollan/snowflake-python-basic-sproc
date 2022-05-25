@@ -37,7 +37,7 @@ jobs:
 
       - name: Create or update storedproc
         run: |
-          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -w SRI -d JEFFHOLLAN_DEMO -s PUBLIC -q 'CREATE OR REPLACE PROCEDURE PYPROC_${{ github.ref_name }}(from_table STRING, to_table STRING, count INT)
+          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -w SRI -d JEFFHOLLAN_DEMO -s PUBLIC -r ACCOUNTADMIN -q 'CREATE OR REPLACE PROCEDURE PYPROC_${{ github.ref_name }}(from_table STRING, to_table STRING, count INT)
                                         RETURNS STRING
                                         LANGUAGE PYTHON
                                         RUNTIME_VERSION = '\''3.8'\''
