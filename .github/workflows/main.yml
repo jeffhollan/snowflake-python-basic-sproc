@@ -24,17 +24,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
-      - name: List directory
-        run: |
-          ls -la
-          echo $(pwd)
-
+      
       # Runs a single command using the runners shell
       - name: Upload artifact to snowsql
         run: |
           curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.9-linux_x86_64.bash
           SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.9-linux_x86_64.bash
-          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -q 'put file://~/python.py @~ overwrite=true'
+          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -q 'put file://'$(pwd)'/python.py @~ overwrite=true' -o friendly=false
         env:
           SNOWSQL_PWD: ${{ secrets.SNOWFLAKE_PASSWORD }}
