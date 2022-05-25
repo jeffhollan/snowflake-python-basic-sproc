@@ -31,16 +31,16 @@ jobs:
         run: |
           curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.9-linux_x86_64.bash
           SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.9-linux_x86_64.bash
-          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -q 'put file://'$(pwd)'/_${{ github.ref_name }}/python.py @~ overwrite=true' -o friendly=false
+          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -q 'put file://'$(pwd)'/python.py @~/${{ github.ref_name }} overwrite=true' -o friendly=false
         env:
           SNOWSQL_PWD: ${{ secrets.SNOWFLAKE_PASSWORD }}
 
       - name: Create or update storedproc
         run: |
-          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -w SRI -d JEFFHOLLAN_DEMO -s PUBLIC -q 'CREATE OR REPLACE PROCEDURE PYPROC_${{ github.ref_name }}(from_table STRING, to_table STRING, count INT)
-                                        RETURNS STRING
-                                        LANGUAGE PYTHON
-                                        RUNTIME_VERSION = '\''3.8'\''
-                                        PACKAGES = ('\''snowflake-snowpark-python'\'')
-                                        IMPORTS = ('\''@~/_${{ github.ref_name }}/python.py'\'')
+          ~/bin/snowsql -u ${{ secrets.SNOWFLAKE_USERNAME }} -a ${{ secrets.SNOWFLAKE_ACCOUNT }} -w SRI -d JEFFHOLLAN_DEMO -s PUBLIC -q 'CREATE OR REPLACE PROCEDURE PYPROC_${{ github.ref_name }}(from_table STRING, to_table STRING, count INT) \
+                                        RETURNS STRING \
+                                        LANGUAGE PYTHON \
+                                        RUNTIME_VERSION = '\''3.8'\'' \
+                                        PACKAGES = ('\''snowflake-snowpark-python'\'') \
+                                        IMPORTS = ('\''@~/${{ github.ref_name }}/python.py'\'') \
                                         HANDLER = '\''python.run'\'';' -o friendly=false
