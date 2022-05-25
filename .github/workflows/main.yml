@@ -38,7 +38,7 @@ jobs:
 
       - name: Create or update storedproc
         run: |
-          ~/bin/snowsql -q 'CREATE OR REPLACE PROCEDURE PYPROC_${{ github.ref_name }}(from_table STRING, to_table STRING, count INT)
+          ~/bin/snowsql -q 'CREATE OR REPLACE PROCEDURE PYPROC_'$(echo ${{ github.ref_name }} | tr . _)'(from_table STRING, to_table STRING, count INT)
                                         RETURNS STRING
                                         LANGUAGE PYTHON
                                         RUNTIME_VERSION = '\''3.8'\''
